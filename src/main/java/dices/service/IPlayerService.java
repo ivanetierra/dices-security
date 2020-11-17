@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IPlayerService {
 
-	//Metodos del CRUD shop
+
 	List<Player> listPlayers(); //list all
 
 	Player addPlayer(Player player); //add new player

@@ -19,6 +19,9 @@ public class Player {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "password")
+    private String password;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date")
     private Date date;
@@ -39,8 +42,9 @@ public class Player {
     public Player() {
     }
 
-    public Player(String name) {
+    public Player(String name, String password) {
         this.name = name;
+        this.password = password;
     }
 
     public Player(Long id, String name, Date date, int wins, float rate) {
@@ -90,6 +94,14 @@ public class Player {
 
     public void setRate(float rate) {
         this.rate = rate;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @JsonIgnore

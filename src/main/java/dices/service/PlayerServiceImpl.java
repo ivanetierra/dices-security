@@ -1,15 +1,18 @@
 package dices.service;
 
 import dices.exceptions.PlayerExistsException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import dices.exceptions.PlayerNotFoundException;
 import dices.model.Game;
 import dices.model.Player;
 import dices.repository.IGameRepository;
 import dices.repository.IPlayerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -31,7 +34,7 @@ public class PlayerServiceImpl implements IPlayerService {
 	@Override
 	public Player addPlayer(Player player) {
 
-		if (iPlayerRepository. existsByName(player.getName())) {
+		if (iPlayerRepository.existsByName(player.getName())) {
 			throw new PlayerExistsException(player.getName());
 		} else {
 			player.setDate(new Date());
@@ -42,18 +45,19 @@ public class PlayerServiceImpl implements IPlayerService {
 	@Override
 	public Player changePlayer(Player newPlayer, Long player_id) {
 
-		Player oldPlayer = iPlayerRepository.findById(player_id).get();
 		if (iPlayerRepository.existsById(player_id)) {
+		Player oldPlayer = iPlayerRepository.findById(player_id).get();
 			if (iPlayerRepository.existsByName(newPlayer.getName())
 					&& !newPlayer.getName().equalsIgnoreCase("anonymous")) {
 				throw new PlayerExistsException(newPlayer.getName());
 			}
 			oldPlayer.setName(newPlayer.getName());
+			return iPlayerRepository.save(oldPlayer);
 
 		} else {
 			throw new PlayerNotFoundException(player_id);
 		}
-		return iPlayerRepository.save(oldPlayer);
+
 	}
 
 	@Override

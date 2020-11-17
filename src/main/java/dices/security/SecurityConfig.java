@@ -8,35 +8,41 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import static dices.security.Constants.*;
+
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	 
 
 		@Autowired
-	    public void configureUser(AuthenticationManagerBuilder auth)
-	      throws Exception {
-	        auth.inMemoryAuthentication().withUser("root")
-	          .password(passwordEncoder().encode("root")).roles("ADMIN");
+		private UserDetailsService userDetailsService;
 
+		@Autowired
+	    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+			
+			auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	    }
 
 	    @Bean
 	    public PasswordEncoder passwordEncoder() {
 	        return new BCryptPasswordEncoder();
 	    }
-	    
+
 	    protected void configure(HttpSecurity http) throws Exception {
 	 
-	    	http.cors().and().csrf().disable()
+	    	http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and() // Disable use of Cookies
+	    		.cors().and().csrf().disable() // Activate default CORS values and disable CSRF
 	    		.authorizeRequests()
-	    		.antMatchers(HttpMethod.POST, "/**").hasRole("ADMIN")
-	    		.antMatchers(HttpMethod.PUT, "/**").hasRole("ADMIN")
-	    		.antMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
-		        .and().httpBasic();	    	
+	    		.antMatchers(HttpMethod.POST, LOGIN_URL).permitAll()
+	        	.anyRequest().authenticated().and()
+	        		.addFilter(new JWTAuthenticationFilter(authenticationManager()))
+	    			.addFilter(new JWTAuthorizationFilter(authenticationManager()));
 	    }
 	
 }

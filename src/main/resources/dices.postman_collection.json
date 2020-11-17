@@ -6,6 +6,74 @@
 	},
 	"item": [
 		{
+			"name": "http://localhost:8080/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"ivan\",\"password\":\"password\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				},
+				"description": "login with the Player in the DB {\"name\":\"ivan\",\"password\":\"password\"} and get Token in the Header"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/players",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "Bearer  eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MDU1NzAwNTcsImlzcyI6Ikl2YW4gRWxpemFsZGUiLCJzdWIiOiJpdmFuIiwiZXhwIjoxNjA2NDM0MDU3fQ.uJA0BdFjZrDNg_FFaebOLwWVKpkbiXVl9BICJxyYtR8q5pTMoex8LrzTco7F5jRVwynYUNUVyiL5OVH894YARA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"Lucas\",\"password\":\"password_lucas\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/players",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"players"
+					]
+				},
+				"description": "post a player with Bearer Token auth"
+			},
+			"response": []
+		},
+		{
 			"name": "localhost:8080/players",
 			"request": {
 				"method": "GET",
@@ -25,41 +93,23 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/players",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n        \"name\": \"Lucas\"\r\n    }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/players",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"players"
-					]
-				},
-				"description": "Add a new player"
-			},
-			"response": []
-		},
-		{
 			"name": "localhost:8080/players/1",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "Bearer  eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MDU1NzEyNzIsImlzcyI6Ikl2YW4gRWxpemFsZGUiLCJzdWIiOiJpdmFuIiwiZXhwIjoxNjA2NDM1MjcyfQ.2Ilf0-SK2t3msUDLyBGg7HRaSkYIUOXpwkg_b9vUCjAWnj3kKTitQqwCUNleGd6IEkCAWLUfELvZGSVPneE8ug",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"name\": \"Ivan\"\r\n    }",
+					"raw": "{\r\n        \"name\": \"Mike\"\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -84,17 +134,27 @@
 		{
 			"name": "localhost:8080/players/5/games",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "Bearer  eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MDU1NzEyNzIsImlzcyI6Ikl2YW4gRWxpemFsZGUiLCJzdWIiOiJpdmFuIiwiZXhwIjoxNjA2NDM1MjcyfQ.2Ilf0-SK2t3msUDLyBGg7HRaSkYIUOXpwkg_b9vUCjAWnj3kKTitQqwCUNleGd6IEkCAWLUfELvZGSVPneE8ug",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/players/5/games",
+					"raw": "localhost:8080/players/1/games",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"players",
-						"5",
+						"1",
 						"games"
 					]
 				},

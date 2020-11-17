@@ -1,5 +1,2 @@
-insert into player (id, name, date, wins, rate) values(1,'Ivan',now(),1, 1);
-
-insert into game (id, dice1, dice2, win, player_id) values(1,2,5, 1, 1);
-
+INSERT INTO `daus`.`player` (`id`, `date`, `name`, `password`, `rate`, `wins`) VALUES ('1', '2020-11-17', 'ivan', '$10$XURPShQNCsLjp1ESc2laoObo9QZDhxz73hJPaEv7/cBha4pk0AgP.', '1', '1');
 

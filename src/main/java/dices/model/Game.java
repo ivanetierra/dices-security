@@ -3,8 +3,6 @@ package dices.model;
 
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Random;
 
 @Entity
 @Table(name="game")
@@ -47,7 +45,6 @@ public class Game {
         this.dice1 = dice1;
         this.dice2 = dice2;
         this.win = win;
-
     }
 
     public static int throwDice() {

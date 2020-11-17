@@ -1,9 +1,9 @@
 package dices.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.transaction.annotation.Transactional;
 import dices.model.Game;
 import dices.model.Player;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

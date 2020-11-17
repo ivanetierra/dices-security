@@ -1,12 +1,12 @@
 
 package dices.controller;
 
+import dices.model.Game;
+import dices.service.GameServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import dices.model.Game;
-import dices.service.GameServiceImpl;
 
 import java.util.List;
 

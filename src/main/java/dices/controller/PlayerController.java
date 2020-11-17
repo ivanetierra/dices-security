@@ -1,11 +1,12 @@
 package dices.controller;
 
-import dices.service.GameServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import dices.model.Game;
 import dices.model.Player;
+import dices.service.GameServiceImpl;
 import dices.service.PlayerServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +18,8 @@ public class PlayerController {
     PlayerServiceImpl playerServiceImpl;
     @Autowired
     GameServiceImpl gameServiceImpl;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     //Show all the players
     @GetMapping("/players")
@@ -25,10 +28,12 @@ public class PlayerController {
         return playerServiceImpl.listPlayers();
     }
 
-    //Add a new player
+    //Add a new player with password JSON {"playerName":"erik","password":"password"}
     @PostMapping("/players")
     public Player addPlayer(@RequestBody Player player) {
         System.out.println(player.getName());
+
+        player.setPassword(passwordEncoder.encode(player.getPassword()));
 
         return playerServiceImpl.addPlayer(player);
     }
@@ -45,8 +50,8 @@ public class PlayerController {
     public Game playGame(@PathVariable(name="player_id")Long player_id){
 
         List<Game>listOfGames = gameServiceImpl.getGamesByPlayer(player_id);
-        int gamesPlayed = listOfGames.size();
 
+        int gamesPlayed = listOfGames.size();
         return playerServiceImpl.playGame(player_id, gamesPlayed);
     }
 
