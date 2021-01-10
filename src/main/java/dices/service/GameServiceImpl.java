@@ -6,6 +6,8 @@ import dices.model.Player;
 import dices.repository.IGameRepository;
 import dices.repository.IPlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +27,17 @@ public class GameServiceImpl implements IGameService {
     }
 
     @Override
-    public List<Game> getGamesByPlayer(Long player_id) {
+    public ResponseEntity<Object> getGamesByPlayer(Long player_id) {
+        if (!iPlayerRepository.existsById(player_id)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Data not accepted");
+        }
+        Player myPlayer2 = iPlayerRepository.findById(player_id).get();
+        return ResponseEntity.ok().body(iGameRepository.findByPlayer(myPlayer2));
+
+    }
+
+    @Override
+    public List<Game> getGamesByPlayer2(Long player_id) {
         if (!iPlayerRepository.existsById(player_id)) { //si el jugador no existe, throw Exeption
             throw new PlayerNotFoundException(player_id);
         }

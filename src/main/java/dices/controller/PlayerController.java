@@ -5,6 +5,8 @@ import dices.model.Player;
 import dices.service.GameServiceImpl;
 import dices.service.PlayerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,33 +42,41 @@ public class PlayerController {
 
     //Change the name of a player
     @PutMapping("/players/{player_id}")
-    Player changePlayer(@RequestBody Player player, @PathVariable Long player_id) {
+    ResponseEntity<Object> changePlayer(@RequestBody Player player, @PathVariable Long player_id) {
 
         return playerServiceImpl.changePlayer(player, player_id);
     }
 
     //Play one game
     @PostMapping("/players/{player_id}/games")
-    public Game playGame(@PathVariable(name="player_id")Long player_id){
+    public ResponseEntity<Object> playGame(@PathVariable(name="player_id")Long player_id){
+        try {
+            List<Game>listOfGames2 = gameServiceImpl.getGamesByPlayer2(player_id);
+            int gamesPlayed = listOfGames2.size();
+            return ResponseEntity.ok().body(playerServiceImpl.playGame(player_id, gamesPlayed));
+        }catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Data not accepted");
+        }
 
-        List<Game>listOfGames = gameServiceImpl.getGamesByPlayer(player_id);
 
-        int gamesPlayed = listOfGames.size();
-        return playerServiceImpl.playGame(player_id, gamesPlayed);
     }
 
     // List all games of a player
     @GetMapping("/players/{player_id}/games")
-    public List<Game> getGamesByPlayer(@PathVariable(name="player_id")Long player_id) {
+    public ResponseEntity<Object> getGamesByPlayer(@PathVariable(name="player_id")Long player_id) {
 
         return gameServiceImpl.getGamesByPlayer(player_id);
     }
 
     //Delete all the games of a player
     @DeleteMapping("/players/{player_id}/games") //delete ALL the collars from a shop
-    public void deleteGamesByPlayer(@PathVariable(name="player_id")Long player_id) {
-
-        gameServiceImpl.deleteGamesByPlayer(player_id);
+    public ResponseEntity<Object> deleteGamesByPlayer(@PathVariable(name="player_id")Long player_id) {
+        try {
+            gameServiceImpl.deleteGamesByPlayer(player_id);
+            return ResponseEntity.ok().build();
+        }catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Data not valid, wrong id");
+        }
     }
 
     //Get ranking from best rate to worst
